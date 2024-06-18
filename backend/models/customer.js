@@ -57,7 +57,7 @@ const customerSchema=new mongoose.Schema({
     },
     lastName:{
         type:String,
-        required:true,
+        required:[true,"Last Name is required"],
     },
     dob:{
         type: Date,
@@ -72,4 +72,4 @@ const customerSchema=new mongoose.Schema({
 
 const customer= mongoose.model('customer',customerSchema)
 
-module.exports=customer
+export default customer
