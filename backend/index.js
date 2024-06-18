@@ -16,9 +16,9 @@ app.use(express.json())
 app.post("/register",async (req,res)=>{
     try {
         const newCustomer = await customer.create(req.body);
-        res.status(201).json(newCustomer);
+        res.status(201).json({"Application id":newCustomer._id,Discription:"Customer registered successfuly",status:"SUCCESS"});
     } catch (error) {
-        console.error("Error creating customer:", error);
+        console.error("Error: ", error);
         res.status(500).json({ error: 'Failed to create customer' });
     }
 })
