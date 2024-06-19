@@ -2,9 +2,6 @@ import express from "express"
 import connectDB from './config/db.js'
 import dotenv from "dotenv"
 import customer from "./models/customer.js"
-import { dirname } from "path"
-import { fileURLToPath } from "url"
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config()
 connectDB()
