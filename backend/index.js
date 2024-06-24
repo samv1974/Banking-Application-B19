@@ -10,7 +10,7 @@ const port=process.env.port
 
 app.use(express.json())
 
-app.use("/",customerRoutes)
+app.use("/register",customerRoutes)
 
 app.listen(port,()=>{
     console.log(`server up on port ${port}`)
