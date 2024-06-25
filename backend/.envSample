@@ -1,0 +1,10 @@
+port=
+Mongo_URI=
+
+# to verify email and mobile while adding new user twilio is used
+# https://console.twilio.com/us1/develop/verify/services enable both sms and email
+# add credentials below 
+
+accountSid = ''
+authToken = ''
+sid=""
