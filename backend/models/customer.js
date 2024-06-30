@@ -73,6 +73,16 @@ const customerSchema=new mongoose.Schema({
     },
     mobile:{
         type:String
+    },
+    employmentDetails:{
+        status:{
+            type:String,
+            enum:["full-time employment","part-time employment","self-employed","retired","student","not-employed"]
+        },
+        details:{
+            key:{type:String},
+            value:{type:String}
+        }
     }
 })
 

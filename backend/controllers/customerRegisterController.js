@@ -16,103 +16,124 @@ const registerCustomer = async(req,res) =>{
             res.status(500).json({ error: 'Failed to create customer' });
         }
     }
-    
-    const updateMail = async(id,mail) =>{
-        try {
-            const user = await customer.findByIdAndUpdate(id, { email:mail }, { new: true });
-            
-            if (!user) {
-                throw new Error('User not found');
-            }
-            
-            console.log(`Email updated for user`);
-        } catch (error) {
-            console.error(`Error updating Email: ${error.message}`)
-            throw error
+
+const employmentDetails =async(req,res)=>{
+    try {
+        const user = await customer.findByIdAndUpdate(
+            req.body.id,
+            { employmentDetails : req.body.employmentDetails},
+            { new: true}
+        )
+
+        
+        if (!user) {
+            return res.status(404).json({ message: 'Customer not found' });
         }
+
+        res.status(200).json({ message: 'Updated Customer'});
+        
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating employment details', error });
+        throw error;
+    }
+}
+    
+const updateMail = async(id,mail) =>{
+    try {
+    const user = await customer.findByIdAndUpdate(id, { email:mail }, { new: true });
+    
+    if (!user) {
+        throw new Error('User not found');
     }
     
-    const updateNumber = async(id,number) =>{
-        try {
-            const user = await customer.findByIdAndUpdate(id, { mobile: number }, { new: true });
-            
-            if (!user) {
-                throw new Error('User not found');
+    console.log(`Email updated for user`);
+} catch (error) {
+    console.error(`Error updating Email: ${error.message}`)
+    throw error
+}
+}
+    
+const updateNumber = async(id,number) =>{
+    try {
+        const user = await customer.findByIdAndUpdate(id, { mobile: number }, { new: true });
+        
+        if (!user) {
+            throw new Error('User not found');
+        }
+        
+        console.log(`Mobile number updated for user ${id}`);
+    } catch (error) {
+        console.error(`Error updating mobile number: ${error.message}`);
+        throw error;
+    }
+}
+
+const updateMobile = async(req,res) =>{
+    try{
+        const verification = await cli.client.verify.v2
+        .services(cli.sid)
+        .verifications.create({
+            channel: "sms",
+            to: "+91"+req.body.mobile,
+        });
+        res.status(200).json(
+            {
+                status:"Verification code sent"
+            })
+            console.log(verification)
+        } catch(error){
+            console.log(error)
+            res.status(500).json({ error: 'Failed to send verification code' })
+    }
+}
+        
+const verifyMobile= async(req,res) =>{
+    try{
+        console.log(req.body)
+        const verificationCheck = await cli.client.verify.v2
+        .services(cli.sid)
+        .verificationChecks.create({
+            to: "+91"+req.body.mobile,
+            code: req.body.code
+        });
+        console.log(verificationCheck);
+        if(verificationCheck.status==='approved'){
+            try {
+                await updateNumber(req.body.id,req.body.mobile)
+                res.status(200).json({ status: 'Mobile number updated' });
+                
             }
-            
-            console.log(`Mobile number updated for user ${id}`);
-        } catch (error) {
-            console.error(`Error updating mobile number: ${error.message}`);
-            throw error;
+            catch(error) {
+                console.log(error);
+                res.status(500).json({ error: 'Failed to update mobile number' });
+            }
+        }
+        else{
+            res.status(400)
         }
     }
-    
-    const updateMobile = async(req,res) =>{
-        try{
-            const verification = await cli.client.verify.v2
-            .services(cli.sid)
-            .verifications.create({
-                channel: "sms",
-                to: "+91"+req.body.mobile,
-            });
-            res.status(200).json(
-                {
-                    status:"Verification code sent"
-                })
-                console.log(verification)
-            } catch(error){
-                console.log(error)
-                res.status(500).json({ error: 'Failed to send verification code' })
-            }
-        }
+    catch(error){
+        console.log(error)
+        res.status(500).json({ error: 'Failed' })
+    }
+}
         
-        const verifyMobile= async(req,res) =>{
-            try{
-                console.log(req.body)
-                const verificationCheck = await cli.client.verify.v2
-                .services(cli.sid)
-                .verificationChecks.create({
-                    to: "+91"+req.body.mobile,
-                    code: req.body.code
-                });
-                console.log(verificationCheck);
-                if(verificationCheck.status==='approved'){
-                    try {
-                        await updateNumber(req.body.id,req.body.mobile)
-                        res.status(200).json({ status: 'Mobile number updated' });
-                        
-                    }
-                    catch(error) {
-                        console.log(error);
-                        res.status(500).json({ error: 'Failed to update mobile number' });
-                    }
-                }
-                else{
-                    res.status(400)
-                }
-            }
-            catch(error){
-                console.log(error)
-                res.status(500).json({ error: 'Failed' })
-            }
-        }
-        
-        const updateEmail = async(req,res) =>{
-            try{
-                const verification = await cli.client.verify.v2
-                .services(cli.sid)
-                .verifications.create({
-                    channel: "email",
-                    to: req.body.mail,
-                });
-                res.status(200).json(
-                    {
-                        status:"Verification code sent"
-                    })
-                    console.log(verification);
-    } catch(error){
-        console.log(error);
-        res.status(500).json({ error: 'Failed to send verification code' });
+const updateEmail = async(req,res) =>{
+    try{
+        const verification = await cli.client.verify.v2
+        .services(cli.sid)
+        .verifications.create({
+            channel: "email",
+            to: req.body.mail,
+        });
+        res.status(200).json(
+            {
+                status:"Verification code sent"
+            })
+            console.log(verification);
+        } catch(error){
+            console.log(error);
+            res.status(500).json({ error: 'Failed to send verification code' });
     }
 }
 
@@ -151,5 +172,6 @@ export default{
     updateMobile,
     verifyMobile,
     updateEmail,
-    verifyEmail
+    verifyEmail,
+    employmentDetails
 }
