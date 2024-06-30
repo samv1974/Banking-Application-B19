@@ -77,11 +77,29 @@ const customerSchema=new mongoose.Schema({
     employmentDetails:{
         status:{
             type:String,
-            enum:["full-time employment","part-time employment","self-employed","retired","student","not-employed"]
+            enum:["full-time employment","part-time employment","self-employed","retired","student","not-employed"],
+            required:true
         },
         details:{
-            key:{type:String},
-            value:{type:String}
+            key:{
+                type:String,
+                required:true
+            },
+            value:{
+                type:String,
+                required:true
+            },
+        }
+    },
+    loginDetails:{
+        username:{
+            type:String,
+            unique:[true,"usename already taken"],
+            required:true
+        },
+        password:{
+            type:String,
+            required:true
         }
     }
 })

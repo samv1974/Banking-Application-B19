@@ -9,5 +9,6 @@ router.post("/verifyMobile",controller.verifyMobile)
 router.post("/updateEmail",controller.updateEmail)
 router.post("/verifyEmail",controller.verifyEmail)
 router.post("/employmentDetails",controller.employmentDetails)
+router.post("/loginDetails",controller.loginDetails)
 
 export default router

@@ -1,6 +1,7 @@
 import customer from "../models/customer.js";
 import twilio from "twilio"
 import cli from "../config/twilio.js"
+import bcrypt from "bcrypt"
 
 const registerCustomer = async(req,res) =>{
     try {
@@ -15,7 +16,29 @@ const registerCustomer = async(req,res) =>{
             console.error("Error: ", error);
             res.status(500).json({ error: 'Failed to create customer' });
         }
-    }
+}
+
+const loginDetails = async(req,res) =>{
+    const { id, username, password } = req.body;
+
+    try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const updatedCustomer = await customer.findByIdAndUpdate(
+            id,
+            { "loginDetails.username" : username, "loginDetails.password": hashedPassword },
+            { new: true }
+        );
+
+        if (!updatedCustomer) {
+            return res.status(404).json({ error: 'Customer not found' });
+        }
+
+        res.status(200).json({ message: 'Username and password updated successfully'});
+    } catch (error) {
+        console.error('Error updating username and password:', error);
+        res.status(500).json({ error: 'Failed to update username and password' });
+    }                                 
+}
 
 const employmentDetails =async(req,res)=>{
     try {
@@ -173,5 +196,6 @@ export default{
     verifyMobile,
     updateEmail,
     verifyEmail,
+    loginDetails,
     employmentDetails
 }
