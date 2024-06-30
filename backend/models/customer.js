@@ -94,7 +94,7 @@ const customerSchema=new mongoose.Schema({
     loginDetails:{
         username:{
             type:String,
-            unique:[true,"usename already taken"],
+            unique:[true],
             required:true
         },
         password:{
