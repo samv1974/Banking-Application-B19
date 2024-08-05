@@ -1,0 +1,67 @@
+.home-container {
+    padding: 20px;
+  }
+  
+  header {
+    margin-bottom: 20px;
+  }
+  
+  .balance {
+    margin-bottom: 20px;
+  }
+  
+  .main-content {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .transactions {
+    width: 60%;
+    margin-right: 20px;
+  }
+  
+  .transactions table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .transactions th, .transactions td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .transactions th {
+    background-color: #f2f2f2;
+  }
+  
+  .transactions tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .transactions tr:hover {
+    background-color: #ddd;
+  }
+  
+  .account-info {
+    width: 35%;
+    border: 1px solid #ddd;
+    padding: 20px;
+  }
+  .box {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .section1, .section2 {
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px;
+    flex: 1;
+  }
+  
+  .section1 {
+    margin-right: 10px;
+  }
